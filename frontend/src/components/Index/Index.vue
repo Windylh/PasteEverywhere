@@ -118,7 +118,7 @@ export default {
                             }/s/${response.data.data}`,
                             "分享成功",
                             {
-                                confirmButtonText: "好的",
+                                confirmButtonText: "点击复制",
                                 callback: () => {
                                     var Url=`${window.location.origin}/s/${response.data.data}`;
                                     navigator.clipboard.writeText(Url).then(()=>{
@@ -146,7 +146,7 @@ export default {
                     }/s/${response.data}`,
                     "分享成功",
                     {
-                        confirmButtonText: "好的",
+                        confirmButtonText: "点击复制",
                         callback: () => {
                             var Url=`${window.location.origin}/s/${response.data.data}`;
                             navigator.clipboard.writeText(Url).then(()=>{
