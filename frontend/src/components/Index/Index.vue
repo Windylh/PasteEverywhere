@@ -120,7 +120,10 @@ export default {
                             {
                                 confirmButtonText: "好的",
                                 callback: () => {
-                                    this.input = "";
+                                    var Url=`${window.location.origin}/s/${response.data.data}`;
+                                    navigator.clipboard.writeText(Url).then(()=>{
+                                            this.$alert("复制成功")
+                                        })
                                 }
                             }
                         );
@@ -145,7 +148,10 @@ export default {
                     {
                         confirmButtonText: "好的",
                         callback: () => {
-                            this.input = "";
+                            var Url=`${window.location.origin}/s/${response.data.data}`;
+                            navigator.clipboard.writeText(Url).then(()=>{
+                                    this.$alert("复制成功")
+                                })
                         }
                     }
                 );
