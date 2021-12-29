@@ -148,7 +148,7 @@ export default {
                     {
                         confirmButtonText: "点击复制",
                         callback: () => {
-                            var Url=`${window.location.origin}/s/${response.data.data}`;
+                            var Url=`${window.location.origin}/s/${response.data}`;
                             navigator.clipboard.writeText(Url).then(()=>{
                                     this.$alert("复制成功")
                                 })
