@@ -119,11 +119,30 @@ export default {
                             "分享成功",
                             {
                                 confirmButtonText: "点击复制",
-                                callback: () => {
-                                    var Url=`${window.location.origin}/s/${response.data.data}`;
-                                    navigator.clipboard.writeText(Url).then(()=>{
-                                            this.$alert("复制成功")
-                                        })
+                                callback: (action) => {
+                                    if (action === 'confirm'){
+                                        var Url=`${window.location.origin}/s/${response.data.data}`;
+                                        if (navigator.clipboard && window.isSecureContext) {
+                                            // navigator clipboard api method'
+                                            navigator.clipboard.writeText(Url).then(()=>{this.$message.success("复制成功");});
+                                        } else {
+                                            // text area method
+                                            let textArea = document.createElement("textarea");
+                                            textArea.value = Url;
+                                            // make the textarea out of viewport
+                                            textArea.style.position = "fixed";
+                                            textArea.style.left = "-999999px";
+                                            textArea.style.top = "-999999px";
+                                            document.body.appendChild(textArea);
+                                            textArea.focus();
+                                            textArea.select();
+                                            new Promise((res, rej) => {
+                                                // here the magic happens
+                                                document.execCommand('copy') ? res() : rej();
+                                                textArea.remove();
+                                            }).then(()=>{this.$message.success("复制成功");});
+                                        }
+                                    }
                                 }
                             }
                         );
@@ -148,10 +167,40 @@ export default {
                     {
                         confirmButtonText: "点击复制",
                         callback: () => {
-                            var Url=`${window.location.origin}/s/${response.data}`;
-                            navigator.clipboard.writeText(Url).then(()=>{
-                                    this.$alert("复制成功")
-                                })
+                            this.$alert(
+                            `通过以下网址访问你所分享的文字，十五分钟内有效：\n ${
+                                window.location.origin
+                            }/s/${response.data.data}`,
+                            "分享成功",
+                            {
+                                confirmButtonText: "点击复制",
+                                callback: (action) => {
+                                    if (action === 'confirm'){
+                                        var Url=`${window.location.origin}/s/${response.data.data}`;
+                                        if (navigator.clipboard && window.isSecureContext) {
+                                            // navigator clipboard api method'
+                                            navigator.clipboard.writeText(Url).then(()=>{this.$message.success("复制成功");});
+                                        } else {
+                                            // text area method
+                                            let textArea = document.createElement("textarea");
+                                            textArea.value = Url;
+                                            // make the textarea out of viewport
+                                            textArea.style.position = "fixed";
+                                            textArea.style.left = "-999999px";
+                                            textArea.style.top = "-999999px";
+                                            document.body.appendChild(textArea);
+                                            textArea.focus();
+                                            textArea.select();
+                                            new Promise((res, rej) => {
+                                                // here the magic happens
+                                                document.execCommand('copy') ? res() : rej();
+                                                textArea.remove();
+                                            }).then(()=>{this.$message.success("复制成功");});
+                                        }
+                                    }
+                                }
+                            }
+                        );
                         }
                     }
                 );
