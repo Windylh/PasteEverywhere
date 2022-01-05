@@ -41,7 +41,7 @@
                         将文件拖到此处，或
                         <em>点击上传</em>
                     </div>
-                    <div class="el-upload__tip" slot="tip">不超过 10 MB 的任意文件</div>
+                    <div class="el-upload__tip" slot="tip">不超过 100 MB 的任意文件</div>
                 </el-upload>
             </div>
             <div v-else>
@@ -88,7 +88,7 @@ export default {
     methods: {
         help: function() {
             this.$alert(
-                `<p>您可以分享无限长度的文字，或大小在<code> 10 MiB </code>以内的文件。</p><br>
+                `<p>您可以分享无限长度的文字，或大小在<code> 100 MiB </code>以内的文件。</p><br>
                 <p>每一个分享内容对应的临时链接，有效期为 15 分钟。</p>
                 <p>链接有效期过后，对应的分享内容将永久删除且无法找回。</p><br>
                 <p>在您使用该服务的过程中，不会产生任何能将分享内容与您的身份关联起来的日志。</p>
@@ -166,41 +166,30 @@ export default {
                     "分享成功",
                     {
                         confirmButtonText: "点击复制",
-                        callback: () => {
-                            this.$alert(
-                            `通过以下网址访问你所分享的文字，十五分钟内有效：\n ${
-                                window.location.origin
-                            }/s/${response.data.data}`,
-                            "分享成功",
-                            {
-                                confirmButtonText: "点击复制",
-                                callback: (action) => {
-                                    if (action === 'confirm'){
-                                        var Url=`${window.location.origin}/s/${response.data.data}`;
-                                        if (navigator.clipboard && window.isSecureContext) {
-                                            // navigator clipboard api method'
-                                            navigator.clipboard.writeText(Url).then(()=>{this.$message.success("复制成功");});
-                                        } else {
-                                            // text area method
-                                            let textArea = document.createElement("textarea");
-                                            textArea.value = Url;
-                                            // make the textarea out of viewport
-                                            textArea.style.position = "fixed";
-                                            textArea.style.left = "-999999px";
-                                            textArea.style.top = "-999999px";
-                                            document.body.appendChild(textArea);
-                                            textArea.focus();
-                                            textArea.select();
-                                            new Promise((res, rej) => {
-                                                // here the magic happens
-                                                document.execCommand('copy') ? res() : rej();
-                                                textArea.remove();
-                                            }).then(()=>{this.$message.success("复制成功");});
-                                        }
-                                    }
+                        callback: (action) => {
+                            if (action === 'confirm'){
+                                var Url=`${window.location.origin}/s/${response.data}`;
+                                if (navigator.clipboard && window.isSecureContext) {
+                                    // navigator clipboard api method'
+                                    navigator.clipboard.writeText(Url).then(()=>{this.$message.success("复制成功");});
+                                } else {
+                                    // text area method
+                                    let textArea = document.createElement("textarea");
+                                    textArea.value = Url;
+                                    // make the textarea out of viewport
+                                    textArea.style.position = "fixed";
+                                    textArea.style.left = "-999999px";
+                                    textArea.style.top = "-999999px";
+                                    document.body.appendChild(textArea);
+                                    textArea.focus();
+                                    textArea.select();
+                                    new Promise((res, rej) => {
+                                        // here the magic happens
+                                        document.execCommand('copy') ? res() : rej();
+                                        textArea.remove();
+                                    }).then(()=>{this.$message.success("复制成功");});
                                 }
                             }
-                        );
                         }
                     }
                 );
@@ -210,9 +199,9 @@ export default {
             this.$message.error(`文件 ${file.name} 上传失败`);
         },
         beforeUploadFileHandler: function(file) {
-            const isLt2M = file.size / 1024 / 1024 < 10;
+            const isLt2M = file.size / 1024 / 1024 < 100;
             if (!isLt2M) {
-                this.$message.error("目前仅支持小于 10 MB 的文件");
+                this.$message.error("目前仅支持小于 100 MB 的文件");
             }
             return isLt2M;
         }
